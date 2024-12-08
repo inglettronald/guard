@@ -1,5 +1,6 @@
 package com.dulkir.guard_plugin;
 
+import com.dulkir.guard_plugin.annotation_handler.GuardNullBasic;
 import com.sun.source.util.JavacTask;
 import com.sun.source.util.Plugin;
 import com.sun.tools.javac.api.JavacTaskImpl;
@@ -18,7 +19,13 @@ public class GuardImpl implements Plugin {
      */
     @Override
     public void init(JavacTask task, String... args) {
-        task.addTaskListener(new ExampleTaskListener((JavacTaskImpl) task));
+        if (!(task instanceof JavacTaskImpl impl)) {
+            System.out.println("wtf this task is illegal");
+            return;
+        }
+        System.out.println("Adding listeners");
+        // task.addTaskListener(new ExampleTaskListener(impl));
+        task.addTaskListener(new GuardNullBasic(impl));
     }
 
     // TODO: replace this with something "proper"
