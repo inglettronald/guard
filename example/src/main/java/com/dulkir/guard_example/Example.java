@@ -1,4 +1,4 @@
-package com.dulkir.guard;
+package com.dulkir.guard_example;
 
 public class Example {
 
