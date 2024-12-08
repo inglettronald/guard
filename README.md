@@ -78,8 +78,7 @@ private void foo() {
 And hopefully more! This project will probably take some time, considering I'm new to compiler plugins, and I'm only
 able to do this when I have free time outside of work. However, I think it would be a novel (and useful) idea to bring
 optional chaining out of kotlin and into java. Considering that projects like `Lombok` have gotten so popular as well,
-I feel like there *might* be some people who also would appreciate the boiler-plate reduction that this would bring
-as well?
+I feel like there *might* be some people who also would appreciate the boiler-plate reduction that this would bring?
 
 There is probably some valid criticism to this idea in that it's a bit silly to use a verbose language if you don't
 want to be verbose. However, I counter this with the super thought out "choice is cool" argument.
