@@ -9,6 +9,10 @@ public class Example {
 
         @Guard.Null String foo = null;
 
+        if (foo == null) {
+            return;
+        }
+
         System.out.println("We did not early return.");
     }
 
