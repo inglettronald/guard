@@ -15,5 +15,8 @@ tasks.withType<JavaCompile> {
         "--add-exports=jdk.compiler/com.sun.tools.javac.tree=$module",
         "--add-exports=jdk.compiler/com.sun.tools.javac.api=$module",
         "--add-exports=jdk.compiler/com.sun.tools.javac.code=$module",
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:7000"
     ))
+    options.isFork = true;
+    dependsOn(tasks.clean)
 }
