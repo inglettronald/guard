@@ -7,18 +7,17 @@ import com.sun.source.util.TaskListener;
 import com.sun.tools.javac.api.JavacTaskImpl;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
-
-import java.util.List;
+import com.sun.tools.javac.util.List;
 
 
 public class GuardNullBasic implements TaskListener {
 
     private final JavacTaskImpl taskImpl;
-
-    private JcIfFactory jcIfFactory;
+    private final JcIfFactory jcIfFactory;
 
     public GuardNullBasic(JavacTaskImpl taskImpl) {
         this.taskImpl = taskImpl;
+        this.jcIfFactory = new JcIfFactory(taskImpl.getContext());
     }
 
     @Override
@@ -30,6 +29,8 @@ public class GuardNullBasic implements TaskListener {
         if (!(unitInterface instanceof JCCompilationUnit unit)) {
             return;
         }
+
+        System.out.println("Before:");
         System.out.println(unit.defs);
 
         // Loop over all methods for processing
@@ -44,6 +45,9 @@ public class GuardNullBasic implements TaskListener {
                 evalMethod(methodDecl);
             }
         }
+
+        System.out.println("After:");
+        System.out.println(unit.defs);
     }
 
     /**
@@ -52,7 +56,8 @@ public class GuardNullBasic implements TaskListener {
      */
     private void evalMethod(JCTree.JCMethodDecl methodDecl) {
         List<JCTree.JCStatement> statements = methodDecl.getBody().stats;
-        for (JCTree.JCStatement statement : statements) {
+        for (List<JCTree.JCStatement> pointer = statements; pointer != null; pointer = pointer.tail) {
+            JCTree.JCStatement statement = pointer.head;
             if (statement instanceof JCTree.JCVariableDecl variableDecl) {
                 if (variableDecl.mods == null
                         || variableDecl.mods.annotations == null
@@ -63,7 +68,12 @@ public class GuardNullBasic implements TaskListener {
                     continue;
                 }
                 System.out.println("found a @Guard.Null annotation!");
-                // TODO: utilize the TreeMaker to add a null check throught the JcIfFactory
+                JCTree.JCIf ifStatement = jcIfFactory.guardAgainstNull(variableDecl.name);
+                pointer.setTail(
+                        pointer.tail == null
+                                ? List.of(ifStatement)
+                                : pointer.tail.prepend(ifStatement)
+                );
             }
             // TODO: handle JCExpressionStatements
         }

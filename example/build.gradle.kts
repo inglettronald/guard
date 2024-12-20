@@ -17,6 +17,14 @@ tasks.withType<JavaCompile> {
         "--add-exports=jdk.compiler/com.sun.tools.javac.code=$module",
         "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:7000"
     ))
-    options.isFork = true;
+    options.isFork = true
     dependsOn(tasks.clean)
+}
+
+tasks.register("stop") {
+    mustRunAfter(tasks.classes, tasks.build, tasks.compileJava)
+    doLast {
+        println("Goodbye")
+        Runtime.getRuntime().exit(0)
+    }
 }
