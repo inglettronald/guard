@@ -17,7 +17,7 @@ public class JcIfFactory {
             symtab = Symtab.instance(context);
     }
 
-    // TODO: this only works if you're returning null!
+    // TODO: this only works if you're returning void!
     public JCTree.JCIf guardAgainstNull(Name variableName) {
         JCTree.JCReturn returnNull = maker.Return(null);
         JCTree.JCBinary condition = maker.Binary(
