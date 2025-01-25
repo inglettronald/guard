@@ -23,8 +23,8 @@ private void foo() {
 }
 // Maps to...
 private void foo() {
-    String idString = this.id;
-    if (idString == null) {
+    String com$dulkir$guard$id$0 = this.id;
+    if (com$dulkir$guard$id$0 == null) {
         return;
     }
 }
@@ -38,12 +38,12 @@ private void foo() {
 }
 // Maps to...
 private void foo() {
-    String idString = this.id; // likely some other generated, less helpful name
-    if (idString == null) {
+    String com$dulkir$guard$id$0 = this.id;
+    if (com$dulkir$guard$id$0 == null) {
         return;
     }
-    char firstIdChar = idString.charAt(0);
-    if (firstIdChar == null) {
+    char com$dulkir$guard$id$1 = com$dulkir$guard$id$0.charAt(0);
+    if (com$dulkir$guard$id$1 == null) {
         return;
     }
     ...
@@ -60,15 +60,15 @@ private void foo() {
 }
 // Maps to...
 private void foo() {
-    String idString = this.id; // likely some other generated, less helpful name
-    if (idString == null) {
+    String com$dulkir$guard$id$0 = this.id;
+    if (com$dulkir$guard$id$0 == null) {
         return;
     }
-    if (idString.isEmpty()) {
+    if (com$dulkir$guard$id$0.isEmpty()) {
         return;
     }
-    char firstIdChar = idString.charAt(0);
-    if (firstIdChar == null) {
+    char com$dulkir$guard$id$1 = com$dulkir$guard$id$0.charAt(0);
+    if (com$dulkir$guard$id$1 == null) {
         return;
     }
     ...
