@@ -9,7 +9,7 @@ public class Example {
         String bar = "six";
         @Guard.Null String foo = null;
 
-        @Guard.Null int foo2 = 0;
+        // @Guard.Null int foo2 = 0;
 
         System.out.println("end");
     }
