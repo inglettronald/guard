@@ -5,7 +5,7 @@ out this README because I thought it would be fun. The current state of the proj
 toolchain set up (ty @lea89 for the help there!) and writing a basic proof-of-concept annotation parser.</p>
 
 <b>RoadMap:</b>
-- [ ] Implement a basic `@Guard.Null` annotation for variable declaration that null checks the resolved value of that line.
+- [x] Implement a basic `@Guard.Null` annotation for variable declaration that null checks the resolved value of that line.
 - [ ] Expand that system to check each step along the way (see usages, this is psuedo optional chaining)
 - [ ] Implement safe returns out of Expression statements with null checks at each step along the way
 - [ ] Implement error handling for improper annotation usage
