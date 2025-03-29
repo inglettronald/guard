@@ -9,7 +9,8 @@ import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.sun.tools.javac.util.List;
 
-
+// TODO: there's going to be a number of these type of annotation parsers running. I should
+//  make a utility to run ahead and get the
 public class GuardNullBasic implements TaskListener {
 
     private final JavacTaskImpl taskImpl;

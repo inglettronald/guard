@@ -29,12 +29,12 @@ tasks.register("stop") {
     }
 }
 
-// Properly defined JavaExec task for Kotlin DSL
-tasks.register<JavaExec>("runExampleWithDebug") {
+// Where our tests happen
+tasks.register<JavaExec>("runTestingWithDebug") {
     group = "application"
-    description = "Runs Example.main with debugger attached"
+    description = "Runs Testing.main with debugger attached"
     classpath = sourceSets.main.get().runtimeClasspath
-    mainClass.set("com.dulkir.guard_example.Example")
+    mainClass.set("com.dulkir.guard_testing.Testing")
 
     // Debug configuration
     debug = true
@@ -47,7 +47,7 @@ tasks.register<JavaExec>("runExampleWithDebug") {
 tasks.register("buildAndDebug") {
     group = "application"
     description = "Builds and runs with debugger"
-    dependsOn("clean", "compileJava", "runExampleWithDebug", "killDebugPort")
+    dependsOn("clean", "compileJava", "runTestingWithDebug", "killDebugPort")
 }
 
 // Task to kill processes using debug port

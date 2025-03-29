@@ -20,7 +20,7 @@ public class GuardImpl implements Plugin {
     @Override
     public void init(JavacTask task, String... args) {
         if (!(task instanceof JavacTaskImpl impl)) {
-            System.out.println("wtf this task is illegal");
+            System.err.println("[Guard]: Unexpected task recieved by GuardImpl.init, plugin will not apply.");
             return;
         }
         System.out.println("Adding listeners");

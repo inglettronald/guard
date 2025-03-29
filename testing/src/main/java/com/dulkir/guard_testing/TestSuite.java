@@ -1,8 +1,8 @@
-package com.dulkir.guard_example;
+package com.dulkir.guard_testing;
 
 import com.dulkir.guard.Guard;
 
-public class Example {
+public class TestSuite {
 
     public static void main(String[] args) {
         System.out.println("Inside Example.main");

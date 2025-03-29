@@ -1,5 +1,9 @@
 package com.dulkir.guard_plugin;
 
+/**
+ * A simple class declaring default values of primitives. These serve as our return values if we reach early exits on
+ * methods returning such primitives.
+ */
 public class Primitives {
     public static final byte DEFAULT_BYTE = 0;
     public static final short DEFAULT_SHORT = 0;

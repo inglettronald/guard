@@ -13,6 +13,7 @@ import java.util.ListResourceBundle;
 public class Utils {
 
     private static final Context.Key<Utils> KEY = new Context.Key<>();
+    private static final String GUARD_PREFIX = "[GUARD] ";
 
     private final Log log;
     private final Symtab symtab;
@@ -42,14 +43,31 @@ public class Utils {
         symtab = Symtab.instance(context);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="logging">
     public void reportError(String message) {
         log.error("guard.generic", message);
     }
 
-    public void warn(String message) {
+    public void logWarn(String message) {
         log.warning(new JCDiagnostic.Warning("guard.generic", message));
     }
 
+    /**
+     * Quick shortcut for prefixed logs. Used for pre-compile info when we don't have the compiler context.
+     */
+    public static void sOut(String info) {
+        System.out.println(GUARD_PREFIX + info);
+    }
+
+    /**
+     * Quick shortcut for prefixed logs. Used for pre-compile info when we don't have the compiler context.
+     */
+    public static void sErr(String info) {
+        System.err.println(GUARD_PREFIX + info);
+    }
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="types/primitives">
     public static Object getDefault(TypeTag type) {
         if (type == null) {
             return null;
@@ -80,4 +98,5 @@ public class Utils {
             default -> symtab.objectType;
         };
     }
+    // </editor-fold>
 }
