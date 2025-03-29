@@ -1,4 +1,4 @@
-package com.dulkir.guard_testing.util;
+package guard_plugin.util;
 
 import java.util.function.Function;
 
@@ -10,55 +10,56 @@ import java.util.function.Function;
  *
  * @author inglettronald 2025
  */
-public class Test<T, U> {
+public abstract class Test<T> implements Applicable {
 
-    private final Function<T, U> before;
-    private final Function<T, U> after;
+    private final T before;
+    private final T after;
 
-    public Test(Function<T, U> before, Function<T, U> after) {
+    public Test(T before, T after) {
         this.before = before;
         this.after = after;
     }
 
-    public Test(Builder<T, U> builder) {
+    public Test(Builder<T> builder) {
         this(builder.before, builder.after);
     }
 
-    public void apply() {
-        applyInternal();
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="applyInternal">
-    private void applyInternal() {
-        // TODO
-    }
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="builder">
-    public static class Builder<T, U> {
+    public static class Builder<T> {
 
-        private Function<T, U> before;
-        private Function<T, U> after;
+        private T before;
+        private T after;
+        Function<Test<T>, Void> applicationFunc;
 
         public Builder() {
             // no-op
         }
 
-        public Builder<T, U> before(Function<T, U> before) {
+        public Builder<T> before(T before) {
             this.before = before;
             return this;
         }
 
-        public Builder<T, U> after(Function<T, U> after) {
+        public Builder<T> after(T after) {
             this.after = after;
             return this;
         }
 
-        public Test<T, U> build() {
+        public Builder<T> applicationFunc(Function<Test<T>, Void> applicationFunc) {
+            this.applicationFunc = applicationFunc;
+            return this;
+        }
+
+        public Test<T> build() {
             if (this.before == null || this.after == null) {
                 throw new IllegalStateException("Test builder parameters should not be null!");
             } else {
-                return new Test<>(this);
+                return new Test<>(this) {
+                    @Override
+                    public void apply() {
+                        applicationFunc.apply(this); // This is kinda scuffed lol
+                    }
+                };
             }
         }
     }

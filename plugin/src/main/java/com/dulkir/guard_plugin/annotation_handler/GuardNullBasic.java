@@ -56,6 +56,9 @@ public class GuardNullBasic implements TaskListener {
      * a guardian clause after that statement. If it's a nonsensical annotation, we want to throw an error.
      */
     private void evalMethod(JCTree.JCMethodDecl methodDecl) {
+        if (methodDecl.getBody() == null) {
+            return; // empty method
+        }
         List<JCTree.JCStatement> statements = methodDecl.getBody().stats;
         for (List<JCTree.JCStatement> pointer = statements; pointer != null; pointer = pointer.tail) {
             JCTree.JCStatement statement = pointer.head;
