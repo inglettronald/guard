@@ -30,7 +30,7 @@ private void foo() {
 }
 ```
 
-Chaining, and functions:
+Chaining, and functions (and maybe exit functions?):
 ```java
 private void foo() {
     @Guard.Null(methodHandle = "logwtf") char firstIdChar = this.id.charAt(0);
@@ -40,11 +40,11 @@ private void foo() {
 private void foo() {
     String com$dulkir$guard$id$0 = this.id;
     if (com$dulkir$guard$id$0 == null) {
-        return;
+        return this::logWtf;
     }
     char com$dulkir$guard$id$1 = com$dulkir$guard$id$0.charAt(0);
     if (com$dulkir$guard$id$1 == null) {
-        return;
+        return this::logWtf;
     }
     ...
 }
