@@ -37,7 +37,7 @@ tasks.withType(JavaCompile::class) {
         "--add-exports=jdk.compiler/com.sun.tools.javac.tree=$module",
         "--add-exports=jdk.compiler/com.sun.tools.javac.api=$module",
         "--add-exports=jdk.compiler/com.sun.tools.javac.code=$module",
-        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:6999"
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=6999"
     ))
     options.isFork = true
 }
@@ -47,7 +47,7 @@ tasks.register<JavaExec>("runTestingWithDebug") {
     group = "application"
     description = "Runs Testing.main with debugger attached"
     classpath = sourceSets.test.get().runtimeClasspath
-    mainClass.set("com.guard_plugin.Testing")
+    mainClass.set("guard_plugin.Testing")
 }
 
 // Combined task for building and debugging

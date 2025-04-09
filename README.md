@@ -10,8 +10,8 @@ toolchain set up (ty @lea89 for the help there!) and writing a basic proof-of-co
 - [ ] Implement safe returns out of Expression statements with null checks at each step along the way
 - [ ] Implement error handling for improper annotation usage
 - [ ] See if It's possible to supply a consumer as an annotation argument?!? Would be cool to modify the early exit code.
-- [ ] Implement some other types of annotations, such as `Guard.Empty`, `Guard.Exception`, etc. A lot of this is still pretty 
-loose as I'll need to know how much I can abuse the parameters.
+- [ ] Implement some other types of annotations, such as `Guard.Empty`, `Guard.Exception`, `Guard.False` etc. A lot 
+of this is still pretty loose as I'll need to know how much I can abuse the parameters.
 
 <h3>Example Developer Facing Usages</h3>
 
@@ -33,7 +33,7 @@ private void foo() {
 Chaining, and functions:
 ```java
 private void foo() {
-    @Guard.Null char firstIdChar = this.id.charAt(0);
+    @Guard.Null(methodHandle = "logwtf") char firstIdChar = this.id.charAt(0);
     ...
 }
 // Maps to...
