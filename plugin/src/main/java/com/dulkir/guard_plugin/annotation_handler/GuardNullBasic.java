@@ -33,7 +33,6 @@ public class GuardNullBasic implements TaskListener {
 
         // System.out.println("Before:");
         // System.out.println(unit.defs);
-
         // Loop over all methods for processing
         for (JCTree tree : unit.defs) {
             if (!(tree instanceof JCTree.JCClassDecl classDecl)) {

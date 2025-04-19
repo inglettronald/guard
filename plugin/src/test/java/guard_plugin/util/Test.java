@@ -10,7 +10,7 @@ import java.util.function.Function;
  *
  * @author inglettronald 2025
  */
-public abstract class Test<T> implements Applicable {
+public abstract class Test<T> {
 
     private final T before;
     private final T after;
@@ -24,12 +24,17 @@ public abstract class Test<T> implements Applicable {
         this(builder.before, builder.after);
     }
 
+    /**
+     * Returns true if it passes
+     */
+    public abstract boolean apply();
+
     // <editor-fold defaultstate="collapsed" desc="builder">
     public static class Builder<T> {
 
         private T before;
         private T after;
-        Function<Test<T>, Void> applicationFunc;
+        Function<Test<T>, Boolean> applicationFunc;
 
         public Builder() {
             // no-op
@@ -45,7 +50,7 @@ public abstract class Test<T> implements Applicable {
             return this;
         }
 
-        public Builder<T> applicationFunc(Function<Test<T>, Void> applicationFunc) {
+        public Builder<T> applicationFunc(Function<Test<T>, Boolean> applicationFunc) {
             this.applicationFunc = applicationFunc;
             return this;
         }
@@ -56,8 +61,8 @@ public abstract class Test<T> implements Applicable {
             } else {
                 return new Test<>(this) {
                     @Override
-                    public void apply() {
-                        applicationFunc.apply(this); // This is kinda scuffed lol
+                    public boolean apply() {
+                        return applicationFunc.apply(this); // This is kinda scuffed lol
                     }
                 };
             }

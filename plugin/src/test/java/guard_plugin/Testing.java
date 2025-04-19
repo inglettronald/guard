@@ -1,5 +1,9 @@
 package guard_plugin;
 
+import com.sun.tools.javac.tree.JCTree;
+import guard_plugin.util.MethodTest;
+import guard_plugin.util.Test;
+
 public class Testing {
 
     /// Not sure yet where this testing hook will actually go. I need to do some work and figure out if I want this

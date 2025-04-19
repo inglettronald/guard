@@ -1,7 +1,6 @@
-package guard_plugin;
+package guard_plugin.util;
 
 import com.sun.tools.javac.tree.JCTree;
-import guard_plugin.util.Test;
 
 public class ClassTest extends Test<JCTree.JCClassDecl> {
 
@@ -10,8 +9,8 @@ public class ClassTest extends Test<JCTree.JCClassDecl> {
     }
 
     @Override
-    public void apply() {
-
+    public boolean apply() {
+        return false; // TODO
     }
 
 }

@@ -1,0 +1,18 @@
+> BEFORE
+public class Example {
+    public static void main(String[] args) {
+        @Guard.Null String foo = null;
+        System.out.println("post clause");
+    }
+}
+
+> AFTER
+public class Example {
+    public static void main(String[] args) {
+        String foo = null;
+        if (foo == null) {
+            return;
+        }
+        System.out.println("post clause");
+    }
+}
