@@ -45,8 +45,9 @@ tasks.withType(JavaCompile::class) {
 // Task in charge of running tests.
 tasks.register<JavaExec>("runTestingWithDebug") {
     group = "application"
-    description = "Runs Testing.main with debugger attached"
+    description = "Runs Testing.main with debugger attached (to the compiler plugin)"
     classpath = sourceSets.test.get().runtimeClasspath
+    workingDir = rootProject.projectDir
     mainClass.set("guard_plugin.Testing")
 }
 
@@ -65,11 +66,15 @@ tasks.register("killDebugPort") {
 
         if (osName.contains("windows")) {
             exec {
+                // TODO: verify this
                 commandLine("cmd", "/c", "for /f \"tokens=5\" %a in ('netstat -ano ^| findstr :$port') do taskkill /F /PID %a")
             }
         } else {
             exec {
-                commandLine("sh", "-c", "lsof -ti:$port | xargs kill -9 || true")
+                // TODO: This is not sound if you install intellij through flatpak by the looks of things?
+                //  If you're investigating an issue here it seems like the intellij terminal sometimes can't find
+                //  these commands. If you have a good solution to this feel free to let me know.
+                commandLine("sh", "-c", "ss -ptln | awk 'match (\$4, /:6999\$/) && match (\$6, /users:\\(\\(\"java\",pid=([0-9]+),/, a) { print a[1] }' | xargs kill")
             }
         }
 
