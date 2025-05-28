@@ -12,4 +12,9 @@ public class Logger {
         System.out.println(PREFIX + "ERROR - " + out);
     }
 
+    public static void printException(Exception exception) {
+        Logger.error(exception.getLocalizedMessage());
+        exception.printStackTrace(System.out);
+    }
+
 }

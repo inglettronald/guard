@@ -5,7 +5,7 @@ package guard_plugin.state;
  */
 public record Result(
         guard_plugin.state.Result.Value value,
-        byte[] info
+        String info
 ) {
 
     public enum Value {

@@ -15,7 +15,13 @@ public class Testing {
 
         Logger.log("Parsing test data...");
         for (Test test : tests) {
-            Parser.parse(test);
+            try {
+                Parser.parse(test);
+            } catch (Exception e) {
+                Logger.error("Error parsing test: " + test.getSource().getName());
+                Logger.printException(e);
+                return;
+            }
         }
 
         Logger.log("Running Compilation...");
@@ -30,7 +36,13 @@ public class Testing {
 
         Logger.log("Writing output...");
         for (Test test : tests) {
-            FileWriter.writeResults(test);
+            try {
+                FileWriter.writeResults(test);
+            } catch (Exception e) {
+                Logger.error("Error writing result for test: " + test.getSource().getName());
+                Logger.printException(e);
+                return;
+            }
         }
     }
 
