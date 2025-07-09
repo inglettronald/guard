@@ -18,10 +18,15 @@ public class Compiler {
         try {
             // TODO - fix this
             JavacTool compiler = JavacTool.create();
-            InputStream in = new ByteArrayInputStream(test.before);
-            OutputStream out = new ByteArrayOutputStream(test.expected.length);
-            OutputStream err = new ByteArrayOutputStream(0);
+            ByteArrayInputStream in = new ByteArrayInputStream(test.before);
+            ByteArrayOutputStream out = new ByteArrayOutputStream(test.expected.length);
+            ByteArrayOutputStream err = new ByteArrayOutputStream(0);
             compiler.run(in, out, err, "");
+            if (err.size() == 0) {
+                test.after = out.toByteArray();
+            } else {
+                test.after = err.toByteArray();
+            }
         } catch (Exception e) {
             test.result = new Result(
                     Result.Value.FAIL_COMPILE,

@@ -21,24 +21,20 @@ dependencies {
     "testImplementation"(sourceSets.main.get().output)
 }
 
+val javacExports = listOf(
+    "--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+    "--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
+    "--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+    "--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+    "--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED"
+)
+
+
 // Allows us to use all the javac goodies.
 tasks.withType(JavaCompile::class) {
-    val module = "ALL-UNNAMED"
-    options.compilerArgs.addAll(listOf(
-        "--add-exports=jdk.compiler/com.sun.tools.javac.util=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.comp=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.tree=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.api=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.code=$module",
-    ))
-    options.forkOptions.jvmArgs!!.addAll(listOf(
-        "--add-exports=jdk.compiler/com.sun.tools.javac.util=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.comp=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.tree=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.api=$module",
-        "--add-exports=jdk.compiler/com.sun.tools.javac.code=$module",
-        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=6999"
-    ))
+    options.compilerArgs.addAll(javacExports)
+    options.forkOptions.jvmArgs!!.addAll(javacExports)
+    options.forkOptions.jvmArgs!!.add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=6999")
     options.isFork = true
 }
 
@@ -49,6 +45,7 @@ tasks.register<JavaExec>("runTestingWithDebug") {
     classpath = sourceSets.test.get().runtimeClasspath
     workingDir = rootProject.projectDir
     mainClass.set("guard_plugin.Testing")
+    jvmArgs(javacExports)
 }
 
 // Combined task for building and debugging
