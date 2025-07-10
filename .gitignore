@@ -42,5 +42,4 @@ bin/
 .DS_Store
 
 ### Test output ###
-/test_output/class/*
-/test_output/method/*
+/test_output/
