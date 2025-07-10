@@ -40,3 +40,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Test output ###
+/test_output/class/*
+/test_output/method/*
