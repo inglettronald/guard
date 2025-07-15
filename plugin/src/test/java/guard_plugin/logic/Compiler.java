@@ -21,7 +21,7 @@ public class Compiler {
             ByteArrayInputStream in = new ByteArrayInputStream(test.before);
             ByteArrayOutputStream out = new ByteArrayOutputStream(test.expected.length);
             ByteArrayOutputStream err = new ByteArrayOutputStream(0);
-            compiler.run(in, out, err, "");
+            compiler.run(in, out, err);
             if (err.size() == 0) {
                 test.after = out.toByteArray();
             } else {

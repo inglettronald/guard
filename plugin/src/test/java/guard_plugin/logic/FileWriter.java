@@ -70,7 +70,7 @@ public class FileWriter {
 
     private static String extension(Test test) {
         return test.result.value() == Result.Value.PASS
-                ? ".pass"
-                : ".fail";
+                ? "pass"
+                : "fail";
     }
 }

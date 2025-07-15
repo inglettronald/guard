@@ -62,7 +62,7 @@ public class Evaluator {
         sb.append("Expected output v\n");
         String expected = new String(test.expected, StandardCharsets.UTF_8);
         sb.append(getLineOf(expected, i)).append("\n");
-        int dist = distanceToPreviousLine(expected, i);
+        int dist = i - startOfLineIndex(expected, i) - 1;
         sb.append(" ".repeat(Math.max(0, dist + 1))).append("|\n");
         sb.append(getLineOf(new String(test.after, StandardCharsets.UTF_8), i)).append("\n");
         sb.append("Actual output ^\n");
@@ -70,25 +70,22 @@ public class Evaluator {
     }
 
     private static String getLineOf(String str, int i) {
-        int start = i - distanceToPreviousLine(str, i) + 1;
-        int end = i + distanceToNextLine(str, i);
+        int start = startOfLineIndex(str, i);
+        int end = endOfLineIncex(str, i);
         return str.substring(start, end);
     }
 
-    private static int distanceToPreviousLine(String str, int i) {
+    private static int startOfLineIndex(String str, int i) {
         char c = str.charAt(i);
         int innerIndex = i;
-        while (c != '\n') {
+        while (c != '\n' && innerIndex > 0) {
             innerIndex--;
-            if (innerIndex < 0) {
-                break;
-            }
             c = str.charAt(innerIndex);
         }
         return innerIndex;
     }
 
-    private static int distanceToNextLine(String str, int i) {
+    private static int endOfLineIncex(String str, int i) {
         int innerIndex = i;
         char c = str.charAt(innerIndex);
         while (c != '\n') {
