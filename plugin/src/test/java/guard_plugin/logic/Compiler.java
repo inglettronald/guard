@@ -6,8 +6,6 @@ import guard_plugin.state.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class Compiler {
 

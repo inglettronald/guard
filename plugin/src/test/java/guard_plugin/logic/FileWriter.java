@@ -32,19 +32,19 @@ public class FileWriter {
         }
         writer.write("========\n\n");
 
-        writer.write("Extra Info (Compiled Before/After vs Expected)");
+        writer.write("Extra Info (Compiled Before/After vs Expected)\n");
 
         if (test.before != null) {
             String before = new String(test.before, StandardCharsets.UTF_8);
-            writer.write("BEFORE >\n" + before + "\n\n");
+            writer.write("BEFORE >\n" + before + "\n");
         }
         if (test.expected != null) {
             String expected = new String(test.expected, StandardCharsets.UTF_8);
-            writer.write("EXPECTED >\n" + expected + "\n\n");
+            writer.write("EXPECTED >\n" + expected + "\n");
         }
         if (test.after != null) {
             String after = new String(test.after, StandardCharsets.UTF_8);
-            writer.write("AFTER >\n" + after + "\n\n");
+            writer.write("AFTER >\n" + after + "\n");
         }
 
         writer.close();
