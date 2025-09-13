@@ -1,11 +1,11 @@
 package guard_plugin.logic;
 
-import com.sun.tools.javac.api.JavacTool;
+import com.sun.tools.javac.Main;
+import guard_plugin.Testing;
 import guard_plugin.state.Result;
 import guard_plugin.state.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 public class Compiler {
 
@@ -14,23 +14,30 @@ public class Compiler {
             return;
         }
         try {
-            // TODO - fix this
-            JavacTool compiler = JavacTool.create();
-            ByteArrayInputStream in = new ByteArrayInputStream(test.before);
-            ByteArrayOutputStream out = new ByteArrayOutputStream(test.expected.length);
-            ByteArrayOutputStream err = new ByteArrayOutputStream(0);
-            compiler.run(in, out, err);
-            if (err.size() == 0) {
-                test.after = out.toByteArray();
-            } else {
-                test.after = err.toByteArray();
-            }
+            compileInternal(test);
         } catch (Exception e) {
             test.result = new Result(
                     Result.Value.FAIL_COMPILE,
                     e.getLocalizedMessage()
             );
         }
+    }
+
+    private static void makeOutputDir() {
+
+    }
+
+    private static void compileInternal(Test test) throws Exception {
+        Main.compile(new String[] {
+                "-d", Testing.COMPILATION_OUTPUT_DIR.getAbsolutePath(),
+                "-cp", new File("").getAbsolutePath(),
+                test.getBefore().getAbsolutePath()
+        });
+        Main.compile(new String[] {
+                "-d", Testing.COMPILATION_OUTPUT_DIR.getAbsolutePath(),
+                "-cp", new File("").getAbsolutePath(),
+                test.getAfter().getAbsolutePath()
+        });
     }
 
 }

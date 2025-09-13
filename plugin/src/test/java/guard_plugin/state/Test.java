@@ -4,42 +4,39 @@ import java.io.File;
 
 public class Test {
 
-    private final File source;
-    private final Type type;
+    private final String name;
 
-    public byte[] before;
-    public byte[] after;
-    public byte[] expected;
+    private final File before;
+    private final File after;
+
+    private CompiledOutputs compiledOutputs;
 
     public Result result;
 
-    public Test(File source, Type type) {
-        this.source = source;
-        this.type = type;
+    public Test(String name, File before, File after) {
+        this.name = name;
+        this.before = before;
+        this.after = after;
     }
 
-    public File getSource() {
-        return source;
+    public File getBefore() {
+        return this.before;
     }
 
-    public Type getType() {
-        return type;
+    public File getAfter() {
+        return this.after;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public CompiledOutputs getCompiledOutputs() {
+        return this.compiledOutputs;
     }
 
     public boolean isFinished() {
         return this.result != null;
     }
 
-    public enum Type {
-        CLASS, METHOD;
-
-        public static Type fromString(String in) {
-            for (Type value : Type.values()) {
-                if (value.name().toLowerCase().equals(in)) {
-                    return value;
-                }
-            }
-            return null;
-        }
-    }
 }

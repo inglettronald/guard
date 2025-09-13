@@ -1,5 +1,6 @@
 package guard_plugin.logic;
 
+import guard_plugin.state.CompiledOutputs;
 import guard_plugin.state.Result;
 import guard_plugin.state.Test;
 
@@ -11,16 +12,17 @@ public class Evaluator {
         if (test.isFinished()) {
             return;
         }
+        CompiledOutputs outputs = test.getCompiledOutputs();
 
-        for (int i = 0; i < test.expected.length; i++) {
+        for (int i = 0; i < outputs.after().length; i++) {
             // Only throw this error if we've stepped through the rest of the characters. This way, we try to give more
             // accurate difference logging
             if (!validIndex(test, i)) {
                 return; // game over
             }
 
-            byte a = test.after[i];
-            byte b = test.expected[i];
+            byte a = outputs.after()[i];
+            byte b = outputs.before()[i];
             if (a != b) {
                 test.result = new Result(
                         Result.Value.FAIL_COMPARE,
@@ -34,14 +36,15 @@ public class Evaluator {
     }
 
     private static boolean validIndex(Test test, int i) {
-        if (i < test.after.length && i < test.expected.length) {
+        CompiledOutputs outputs = test.getCompiledOutputs();
+        if (i < outputs.after().length && i < outputs.before().length) {
             return true;
-        } else if (i < test.after.length) {
+        } else if (i < outputs.before().length) {
             test.result = new Result(
                     Result.Value.FAIL_COMPARE,
                     "Actual compiled output larger than expected, but common character indices match."
             );
-        } else if (i < test.expected.length) {
+        } else if (i < outputs.after().length) {
             test.result = new Result(
                     Result.Value.FAIL_COMPARE,
                     "Actual compiled output smaller than expected, but common character indices match."
@@ -56,15 +59,16 @@ public class Evaluator {
     }
 
     private static String generateErrorMessage(Test test, int i) {
+        CompiledOutputs outputs = test.getCompiledOutputs();
         StringBuilder sb = new StringBuilder();
         sb.append("Difference between compiled and expected output found!\n");
         sb.append("Difference starts at index ").append(i).append(": \n\n");
         sb.append("Expected output v\n");
-        String expected = new String(test.expected, StandardCharsets.UTF_8);
+        String expected = new String(outputs.after(), StandardCharsets.UTF_8);
         sb.append(getLineOf(expected, i)).append("\n");
         int dist = i - startOfLineIndex(expected, i) - 1;
         sb.append(" ".repeat(Math.max(0, dist + 1))).append("|\n");
-        sb.append(getLineOf(new String(test.after, StandardCharsets.UTF_8), i)).append("\n");
+        sb.append(getLineOf(new String(outputs.before(), StandardCharsets.UTF_8), i)).append("\n");
         sb.append("Actual output ^\n");
         return sb.toString();
     }

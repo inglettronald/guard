@@ -44,3 +44,4 @@ bin/
 ### Test output ###
 /test_output/
 /.idea/material_theme_project_new.xml
+/compilation_output/

@@ -10,7 +10,6 @@ public record Result(
 
     public enum Value {
         PASS,
-        FAIL_PARSE, // Can't read the test file (no before/after)
         FAIL_COMPILE, // Can't compile, probably miswritten test
         FAIL_COMPARE // Compiled output is different
     }

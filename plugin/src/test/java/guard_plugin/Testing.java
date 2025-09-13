@@ -1,5 +1,6 @@
 package guard_plugin;
 
+import com.sun.tools.javac.util.Log;
 import guard_plugin.state.Test;
 import guard_plugin.logic.*;
 
@@ -9,20 +10,12 @@ import java.util.Collection;
 
 public class Testing {
 
+    public static final File COMPILATION_OUTPUT_DIR = new File("compilation_output");
+
+
     public static void main(String[] args) {
         Logger.log("Gathering test objects...");
         Collection<Test> tests = getTests();
-
-        Logger.log("Parsing test data...");
-        for (Test test : tests) {
-            try {
-                Parser.parse(test);
-            } catch (Exception e) {
-                Logger.error("Error parsing test: " + test.getSource().getName());
-                Logger.printException(e);
-                return;
-            }
-        }
 
         Logger.log("Running Compilation...");
         for (Test test : tests) {
@@ -39,7 +32,7 @@ public class Testing {
             try {
                 FileWriter.writeResults(test);
             } catch (Exception e) {
-                Logger.error("Error writing result for test: " + test.getSource().getName());
+                Logger.error("Error writing result for test: " + test.getName());
                 Logger.printException(e);
                 return;
             }
@@ -58,33 +51,46 @@ public class Testing {
             return ret;
         }
         for (File file : directoryContents) {
+            String name = file.getName();
+
             if (!file.isDirectory()) {
                 Logger.error(
-                        "Skipping unrecognized file " + file.getName() + ", probably outside of intended scope."
+                        "Skipping unrecognized file " + name + ", probably outside of intended scope."
                 );
                 continue;
             }
-            Test.Type type = Test.Type.fromString(file.getName());
-            if (type == null) {
-                Logger.error(
-                        "Unrecognized test subdirectory: " + file.getName() + ", continuing..."
-                );
-                continue;
-            }
+
             File[] tests = file.listFiles();
-            if (tests == null) {
-                Logger.error("No " + file.getName() + " tests present, where did they go?!");
+            if (tests == null || tests.length == 0) {
+                Logger.error("No test files in directory " + name);
                 continue;
             }
-            for (File test : tests) {
-                if (!test.isFile()) {
+
+            File before = null;
+            File after = null;
+            for (File innerFile : tests) {
+                if (!innerFile.isDirectory()) {
+                    // todo logging
                     continue;
                 }
-                if (!test.getName().endsWith(".test")) {
+                String innerName = innerFile.getName();
+                File fileToCompile = new File(innerFile.getAbsolutePath() + "/" + name + ".java");
+                if (!fileToCompile.exists()) {
+                    // todo logging
                     continue;
                 }
-                ret.add(new Test(test, type));
+                if (innerName.equals("Before")) {
+                    before = fileToCompile;
+                } else if (innerName.equals("After")) {
+                    after = fileToCompile;
+                }
             }
+            if (before == null || after == null) {
+                Logger.error(
+                        "Test " + name + " is missing a source file. Please provide a Before.java and After.java"
+                );
+            }
+            ret.add(new Test(name, before, after));
         }
         return ret;
     }

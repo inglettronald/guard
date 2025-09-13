@@ -1,5 +1,6 @@
 package guard_plugin.logic;
 
+import guard_plugin.state.CompiledOutputs;
 import guard_plugin.state.Result;
 import guard_plugin.state.Test;
 
@@ -16,13 +17,12 @@ public class FileWriter {
         }
 
         java.io.FileWriter writer = new java.io.FileWriter(out);
-        writer.write("Test results for " + test.getSource().getName() + "\n");
+        writer.write("Test results for " + test.getName() + "\n");
         if (test.result.value() == Result.Value.PASS) {
             writer.write("Tests Passed!\n");
         } else {
             writer.write("Tests Failed at step: ");
             String stage = switch (test.result.value()) {
-                case FAIL_PARSE -> "Parse";
                 case FAIL_COMPARE -> "Compare";
                 case FAIL_COMPILE -> "Compile";
                 default -> "null";
@@ -34,16 +34,13 @@ public class FileWriter {
 
         writer.write("Extra Info (Compiled Before/After vs Expected)\n");
 
-        if (test.before != null) {
-            String before = new String(test.before, StandardCharsets.UTF_8);
+        CompiledOutputs outputs = test.getCompiledOutputs();
+        if (outputs.before() != null) {
+            String before = new String(outputs.before(), StandardCharsets.UTF_8);
             writer.write("BEFORE >\n" + before + "\n");
         }
-        if (test.expected != null) {
-            String expected = new String(test.expected, StandardCharsets.UTF_8);
-            writer.write("EXPECTED >\n" + expected + "\n");
-        }
-        if (test.after != null) {
-            String after = new String(test.after, StandardCharsets.UTF_8);
+        if (outputs.after() != null) {
+            String after = new String(outputs.after(), StandardCharsets.UTF_8);
             writer.write("AFTER >\n" + after + "\n");
         }
 
@@ -51,7 +48,7 @@ public class FileWriter {
     }
 
     private static File getOutputFile(Test test) {
-        File outputDir = new File("test_output/" + test.getType().name().toLowerCase());
+        File outputDir = new File("test_output/");
         if (!outputDir.exists()) {
             try {
                 // noinspection ResultOfMethodCallIgnored
@@ -61,10 +58,10 @@ public class FileWriter {
                 return null;
             }
         }
-        File source = test.getSource();
+        String name = test.getName();
         return new File(
                 outputDir.getPath(),
-                source.getName().substring(0, source.getName().length() - 4) + extension(test)
+                name + extension(test)
         );
     }
 
